@@ -961,31 +961,22 @@ def main():
     
     # Veri yükleme
     if use_demo:
-        # Demo veri oluştur
-        np.random.seed(42)
-        dates = pd.date_range(start='2025-01-01', end='2025-12-25', freq='D')
-        demo_companies = ['TechCorp', 'DataInc', 'CloudSoft', 'AILabs', 'DevStudio', 'WebAgency', 
-                         'StartupX', 'BigData Co', 'ML Solutions', 'CodeFactory', 'InnovateTech', 
-                         'DigitalFirst', 'SmartSystems', 'FutureTech', 'NextGen Labs']
-        demo_positions = ['Data Analyst', 'Software Engineer', 'Product Manager', 'Data Scientist',
-                         'ML Engineer', 'Backend Developer', 'Frontend Developer', 'DevOps Engineer',
-                         'Business Analyst', 'Project Manager', 'QA Engineer', 'Full Stack Developer']
-        demo_statuses = ['Applied', 'Rejected', 'Under Review', 'Interview']
-        demo_categories = ['application_submitted', 'rejected', 'application_viewed', 'interview_invite']
+        # sample_data.csv dosyasından demo veri yükle
+        import os
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        sample_data_path = os.path.join(script_dir, 'sample_data.csv')
         
-        n_samples = 200
-        df = pd.DataFrame({
-            'Date': np.random.choice(dates, n_samples),
-            'Company': np.random.choice(demo_companies, n_samples),
-            'Position': np.random.choice(demo_positions, n_samples),
-            'Status': np.random.choice(demo_statuses, n_samples, p=[0.5, 0.25, 0.15, 0.1]),
-            'Category': np.random.choice(demo_categories, n_samples),
-            'Subject': ['Demo Subject'] * n_samples,
-            'Gmail Link': ['https://mail.google.com'] * n_samples
-        })
-        df = df.sort_values('Date', ascending=False)
-        
-        st.info("🎮 Demo verisi kullanılıyor. Gerçek verilerinizi yüklemek için sol panelden CSV dosyanızı seçin.")
+        try:
+            df = pd.read_csv(sample_data_path)
+            # Tarih sütununu datetime'a çevir
+            if 'Date' in df.columns:
+                df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+                df = df.dropna(subset=['Date'])
+                df = df.sort_values('Date', ascending=False)
+            st.info("🎮 Demo verisi kullanılıyor (sample_data.csv). Gerçek verilerinizi yüklemek için sol panelden CSV dosyanızı seçin.")
+        except FileNotFoundError:
+            st.error("❌ sample_data.csv dosyası bulunamadı. Lütfen dosyanın proje klasöründe olduğundan emin olun.")
+            return
     else:
         df = load_data(uploaded_file)
         if df is None:
