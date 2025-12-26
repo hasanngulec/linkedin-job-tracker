@@ -904,6 +904,20 @@ def main():
     
     # Sidebar
     with st.sidebar:
+        # Sosyal medya linkleri
+        st.markdown("""
+        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
+            <a href="https://www.linkedin.com/in/hasan-tahsin-güleç-977955199" target="_blank" style="text-decoration: none;">
+                <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="32" height="32" alt="LinkedIn">
+            </a>
+            <a href="https://github.com/hasanngulec" target="_blank" style="text-decoration: none;">
+                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="32" height="32" alt="GitHub">
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
         st.markdown("### 📁 Veri Yükleme")
         st.info("💡 **Bilgi:** n8n workflow'unuzdan dışa aktardığınız CSV dosyasını yükleyin.")
         
