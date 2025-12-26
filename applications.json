@@ -1,0 +1,268 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "operation": "getAll",
+                "limit": 500,
+                "simple": false,
+                "filters": {
+                    "receivedAfter": "2025-01-01T00:00:00",
+                    "receivedBefore": "2025-12-31T23:59:59",
+                    "sender": "linkedin.com"
+                },
+                "options": {}
+            },
+            "id": "gmail-node-id",
+            "name": "Gmail - Get All 2025 Emails",
+            "type": "n8n-nodes-base.gmail",
+            "typeVersion": 2.1,
+            "position": [
+                -400,
+                64
+            ],
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "YOUR_GMAIL_CREDENTIAL_ID",
+                    "name": "YOUR_GMAIL_CREDENTIAL_NAME"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "// LinkedIn Email Kategorileme ve Veri Çıkarma\nconst items = $input.all();\nconst results = [];\nfor (const item of items) {\n  const email = item.json;\n  \n  const subject = (email.Subject || email.subject || '').toLowerCase();\n  const subjectOriginal = email.Subject || email.subject || '';\n  const snippet = (email.snippet || '');\n  const snippetLower = snippet.toLowerCase();\n  \n  const bodyHtml = email.html || email.textHtml || '';\n  const bodyPlain = email.textPlain || email.text || snippet;\n  const fullText = subject + ' ' + snippetLower + ' ' + bodyPlain.toLowerCase();\n  \n  // EMAIL TARİHİ VE SAATİ\n  let emailDate = null;\n  let emailTime = null;\n  if (email.internalDate) {\n    try {\n      const ts = parseInt(email.internalDate);\n      const dateObj = ts > 1000000000000 ? new Date(ts) : new Date(ts * 1000);\n      emailDate = dateObj.toISOString().split('T')[0];\n      emailTime = dateObj.toISOString().split('T')[1].substring(0, 5);\n    } catch(e) {}\n  }\n  if (!emailDate && email.date) {\n    try {\n      const dateObj = new Date(email.date);\n      emailDate = dateObj.toISOString().split('T')[0];\n      emailTime = dateObj.toISOString().split('T')[1].substring(0, 5);\n    } catch(e) {}\n  }\n  if (!emailDate) emailDate = 'Unknown';\n  if (!emailTime) emailTime = 'Unknown';\n  \n  // Kategori\n  let category = 'other';\n  let status = 'unknown';\n  \n  if (fullText.includes('unfortunately') || fullText.includes('maalesef') ||\n      fullText.includes('not moving forward') || fullText.includes('your update from')) {\n    category = 'rejected'; status = 'Rejected';\n  }\n  else if (fullText.includes('interview') || fullText.includes('mülakat')) {\n    category = 'interview_invite'; status = 'Interview';\n  }\n  else if (fullText.includes('application was viewed')) {\n    category = 'application_viewed'; status = 'Under Review';\n  }\n  else if (fullText.includes('application was sent') || fullText.includes('your application to')) {\n    category = 'application_submitted'; status = 'Applied';\n  }\n  \n  // Şirket adı\n  let companyName = 'Unknown';\n  let match = subjectOriginal.match(/application was sent to (.+?)$/i);\n  if (match) companyName = match[1].trim();\n  if (companyName === 'Unknown') {\n    match = subjectOriginal.match(/application to .+ at (.+?)$/i);\n    if (match) companyName = match[1].trim();\n  }\n  if (companyName === 'Unknown') {\n    match = subjectOriginal.match(/update from (.+?)$/i);\n    if (match) companyName = match[1].trim();\n  }\n  if (companyName === 'Unknown') {\n    match = subjectOriginal.match(/was viewed by (.+?)$/i);\n    if (match) companyName = match[1].trim();\n  }\n  \n  // POZİSYON - \"Similar jobs\" bölümünden ÖNCE ara\n  let positionTitle = 'Not Specified';\n  \n  // 1. HTML'de \"Your application was sent\" ile başlayan bölümden çek\n  const beforeSimilar = bodyHtml.split(/similar jobs|view similar/i)[0] || bodyHtml;\n  \n  // 2. İlk pozisyon linkini bul (similar jobs öncesinde)\n  const posMatch = beforeSimilar.match(/<a[^>]*href[^>]*>([^<]+)<\\/a>/i);\n  if (posMatch && posMatch[1] && posMatch[1].length > 3 && posMatch[1].length < 100) {\n    if (!posMatch[1].toLowerCase().includes('linkedin') && \n        !posMatch[1].toLowerCase().includes(companyName.toLowerCase().split(' ')[0])) {\n      positionTitle = posMatch[1].trim();\n    }\n  }\n  \n  // 3. Snippet'ten al (backup)\n  if (positionTitle === 'Not Specified') {\n    const subjMatch = subjectOriginal.match(/application to (.+?) at/i);\n    if (subjMatch) {\n      positionTitle = subjMatch[1].trim();\n    }\n  }\n  \n  // 4. Snippet'ten keyword ile\n  if (positionTitle === 'Not Specified') {\n    const snipMatch = snippet.match(/([\\w\\s\\/]+(?:Analyst|Engineer|Developer|Manager|Designer|Hacker|Scientist|Consultant|Specialist|Director|Lead|Intern|Associate)[^\\n]*)/i);\n    if (snipMatch) positionTitle = snipMatch[1].trim().substring(0, 80);\n  }\n  \n  results.push({\n    json: {\n      date: emailDate,\n      time: emailTime,\n      company: companyName,\n      position: positionTitle,\n      category: category,\n      status: status,\n      subject: subjectOriginal,\n      \n      from: email.From || email.from || '',\n      emailId: email.id || '',\n      gmailLink: 'https://mail.google.com/mail/u/0/#inbox/' + (email.id || ''),\n      processedAt: new Date().toISOString()\n    }\n  });\n}\nreturn results;"
+            },
+            "id": "code-node-id",
+            "name": "Kategorize & Extract Data",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                112,
+                -32
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 1
+                    },
+                    "conditions": [
+                        {
+                            "id": "job-related",
+                            "leftValue": "={{ $json.subject.toLowerCase() }}",
+                            "rightValue": "your application",
+                            "operator": {
+                                "type": "string",
+                                "operation": "contains"
+                            }
+                        }
+                    ],
+                    "combinator": "or"
+                },
+                "options": {}
+            },
+            "id": "filter-node-id",
+            "name": "Filter Job Applications Only",
+            "type": "n8n-nodes-base.filter",
+            "typeVersion": 2,
+            "position": [
+                336,
+                128
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "append",
+                "documentId": {
+                    "__rl": true,
+                    "value": "YOUR_GOOGLE_SHEETS_URL",
+                    "mode": "url"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "YOUR_GOOGLE_SHEETS_URL",
+                    "mode": "url"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Date": "={{ $json.date }}",
+                        "Time": "={{ $json.time }}",
+                        "Company": "={{ $json.company }}",
+                        "Position": "={{ $json.position }}",
+                        "Category": "={{ $json.category }}",
+                        "Status": "={{ $json.status }}",
+                        "Subject": "={{ $json.subject }}",
+                        "Gmail Link": "={{ $json.gmailLink }}",
+                        "Processed At": "={{ $json.processedAt }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "Date",
+                            "displayName": "Date",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Time",
+                            "displayName": "Time",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Company",
+                            "displayName": "Company",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Position",
+                            "displayName": "Position",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Category",
+                            "displayName": "Category",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Status",
+                            "displayName": "Status",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Subject",
+                            "displayName": "Subject",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Gmail Link",
+                            "displayName": "Gmail Link",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Processed At",
+                            "displayName": "Processed At",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "id": "sheets-node-id",
+            "name": "Save to Google Sheets",
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.4,
+            "position": [
+                608,
+                -32
+            ],
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+                    "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL_NAME"
+                }
+            }
+        },
+        {
+            "parameters": {},
+            "id": "trigger-node-id",
+            "name": "Manual Trigger",
+            "type": "n8n-nodes-base.manualTrigger",
+            "typeVersion": 1,
+            "position": [
+                -608,
+                64
+            ]
+        }
+    ],
+    "connections": {
+        "Gmail - Get All 2025 Emails": {
+            "main": [
+                [
+                    {
+                        "node": "Kategorize & Extract Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Kategorize & Extract Data": {
+            "main": [
+                [
+                    {
+                        "node": "Filter Job Applications Only",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Filter Job Applications Only": {
+            "main": [
+                [
+                    {
+                        "node": "Save to Google Sheets",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Manual Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Gmail - Get All 2025 Emails",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {},
+    "meta": {
+        "templateCredsSetupCompleted": true
+    }
+}

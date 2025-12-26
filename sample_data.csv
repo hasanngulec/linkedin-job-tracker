@@ -1,0 +1,31 @@
+Date,Company,Position,Category,Status,Subject,Gmail Link,Processed At
+2025-01-15,Şirket A,Pozisyon 1,application_submitted,Applied,Your application was sent to Şirket A,https://mail.google.com/mail/u/0/#inbox/example1,2025-01-15T10:30:00.000Z
+2025-01-15,Şirket B,Pozisyon 2,application_submitted,Applied,Your application was sent to Şirket B,https://mail.google.com/mail/u/0/#inbox/example2,2025-01-15T11:00:00.000Z
+2025-01-14,Şirket C,Pozisyon 3,application_viewed,Under Review,Your application was viewed by Şirket C,https://mail.google.com/mail/u/0/#inbox/example3,2025-01-14T14:20:00.000Z
+2025-01-14,Şirket D,Pozisyon 4,rejected,Rejected,Your application to Pozisyon 4 at Şirket D,https://mail.google.com/mail/u/0/#inbox/example4,2025-01-14T09:15:00.000Z
+2025-01-13,Şirket E,Pozisyon 5,interview_invite,Interview,Interview invitation from Şirket E,https://mail.google.com/mail/u/0/#inbox/example5,2025-01-13T16:45:00.000Z
+2025-01-13,Şirket F,Pozisyon 6,application_submitted,Applied,Your application was sent to Şirket F,https://mail.google.com/mail/u/0/#inbox/example6,2025-01-13T08:30:00.000Z
+2025-01-12,Şirket G,Pozisyon 7,application_submitted,Applied,Your application was sent to Şirket G,https://mail.google.com/mail/u/0/#inbox/example7,2025-01-12T12:00:00.000Z
+2025-01-12,Şirket H,Pozisyon 8,application_viewed,Under Review,Your application was viewed by Şirket H,https://mail.google.com/mail/u/0/#inbox/example8,2025-01-12T15:30:00.000Z
+2025-01-11,Şirket I,Pozisyon 9,rejected,Rejected,Your application to Pozisyon 9 at Şirket I,https://mail.google.com/mail/u/0/#inbox/example9,2025-01-11T10:00:00.000Z
+2025-01-11,Şirket J,Pozisyon 10,application_submitted,Applied,Your application was sent to Şirket J,https://mail.google.com/mail/u/0/#inbox/example10,2025-01-11T11:30:00.000Z
+2025-01-10,Şirket K,Pozisyon 11,interview_invite,Interview,Interview invitation from Şirket K,https://mail.google.com/mail/u/0/#inbox/example11,2025-01-10T09:00:00.000Z
+2025-01-10,Şirket L,Pozisyon 12,application_submitted,Applied,Your application was sent to Şirket L,https://mail.google.com/mail/u/0/#inbox/example12,2025-01-10T14:15:00.000Z
+2025-01-09,Şirket M,Pozisyon 13,application_viewed,Under Review,Your application was viewed by Şirket M,https://mail.google.com/mail/u/0/#inbox/example13,2025-01-09T16:00:00.000Z
+2025-01-09,Şirket N,Pozisyon 14,application_submitted,Applied,Your application was sent to Şirket N,https://mail.google.com/mail/u/0/#inbox/example14,2025-01-09T08:45:00.000Z
+2025-01-08,Şirket O,Pozisyon 15,rejected,Rejected,Your application to Pozisyon 15 at Şirket O,https://mail.google.com/mail/u/0/#inbox/example15,2025-01-08T11:00:00.000Z
+2025-01-08,Şirket A,Pozisyon 16,application_submitted,Applied,Your application was sent to Şirket A,https://mail.google.com/mail/u/0/#inbox/example16,2025-01-08T13:30:00.000Z
+2025-01-07,Şirket B,Pozisyon 17,application_viewed,Under Review,Your application was viewed by Şirket B,https://mail.google.com/mail/u/0/#inbox/example17,2025-01-07T10:20:00.000Z
+2025-01-07,Şirket C,Pozisyon 18,application_submitted,Applied,Your application was sent to Şirket C,https://mail.google.com/mail/u/0/#inbox/example18,2025-01-07T15:00:00.000Z
+2025-01-06,Şirket D,Pozisyon 19,interview_invite,Interview,Interview invitation from Şirket D,https://mail.google.com/mail/u/0/#inbox/example19,2025-01-06T09:30:00.000Z
+2025-01-06,Şirket E,Pozisyon 20,application_submitted,Applied,Your application was sent to Şirket E,https://mail.google.com/mail/u/0/#inbox/example20,2025-01-06T12:45:00.000Z
+2025-01-05,Şirket F,Pozisyon 21,rejected,Rejected,Your application to Pozisyon 21 at Şirket F,https://mail.google.com/mail/u/0/#inbox/example21,2025-01-05T14:00:00.000Z
+2025-01-05,Şirket G,Pozisyon 22,application_submitted,Applied,Your application was sent to Şirket G,https://mail.google.com/mail/u/0/#inbox/example22,2025-01-05T08:15:00.000Z
+2025-01-04,Şirket H,Pozisyon 23,application_viewed,Under Review,Your application was viewed by Şirket H,https://mail.google.com/mail/u/0/#inbox/example23,2025-01-04T11:30:00.000Z
+2025-01-04,Şirket I,Pozisyon 24,application_submitted,Applied,Your application was sent to Şirket I,https://mail.google.com/mail/u/0/#inbox/example24,2025-01-04T16:00:00.000Z
+2025-01-03,Şirket J,Pozisyon 25,rejected,Rejected,Your application to Pozisyon 25 at Şirket J,https://mail.google.com/mail/u/0/#inbox/example25,2025-01-03T10:45:00.000Z
+2025-01-03,Şirket K,Pozisyon 26,application_submitted,Applied,Your application was sent to Şirket K,https://mail.google.com/mail/u/0/#inbox/example26,2025-01-03T13:00:00.000Z
+2025-01-02,Şirket L,Pozisyon 27,interview_invite,Interview,Interview invitation from Şirket L,https://mail.google.com/mail/u/0/#inbox/example27,2025-01-02T09:00:00.000Z
+2025-01-02,Şirket M,Pozisyon 28,application_submitted,Applied,Your application was sent to Şirket M,https://mail.google.com/mail/u/0/#inbox/example28,2025-01-02T14:30:00.000Z
+2025-01-01,Şirket N,Pozisyon 29,application_viewed,Under Review,Your application was viewed by Şirket N,https://mail.google.com/mail/u/0/#inbox/example29,2025-01-01T11:00:00.000Z
+2025-01-01,Şirket O,Pozisyon 30,application_submitted,Applied,Your application was sent to Şirket O,https://mail.google.com/mail/u/0/#inbox/example30,2025-01-01T08:30:00.000Z
