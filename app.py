@@ -21,121 +21,23 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - Okunabilir ve temiz stil
+# Custom CSS - Tema uyumlu stil (açık ve karanlık tema desteği)
 st.markdown("""
 <style>
-    /* Ana başlık - okunabilir ve belirgin */
-    .main-header {
-        color: #1f77b4 !important;
-        font-weight: 700 !important;
-        font-size: 2.5rem !important;
-        text-align: center !important;
-        margin-bottom: 0.5rem !important;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1) !important;
+    /* Sosyal medya ikonları */
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
     }
     
-    /* Alt başlık */
-    .sub-header {
-        color: #666666 !important;
-        font-size: 1.1rem !important;
-        text-align: center !important;
-        margin-bottom: 2rem !important;
+    .social-links a img {
+        transition: transform 0.2s;
     }
     
-    /* Metrik kartları */
-    .metric-card {
-        background: #ffffff !important;
-        border: 2px solid #e0e0e0 !important;
-        border-radius: 12px !important;
-        padding: 1.5rem !important;
-        text-align: center !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    .metric-value {
-        font-size: 2.5rem !important;
-        font-weight: 700 !important;
-        margin-bottom: 0.3rem !important;
-        color: #1f77b4 !important;
-    }
-    
-    .metric-label {
-        font-size: 0.9rem !important;
-        color: #666666 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 1px !important;
-        font-weight: 600 !important;
-    }
-    
-    .cyan { color: #00bcd4 !important; }
-    .purple { color: #9c27b0 !important; }
-    .green { color: #4caf50 !important; }
-    .red { color: #f44336 !important; }
-    .orange { color: #ff9800 !important; }
-    .yellow { color: #ffc107 !important; }
-    
-    /* Bölüm başlıkları */
-    .section-title {
-        font-size: 1.5rem !important;
-        font-weight: 700 !important;
-        color: #1f77b4 !important;
-        margin: 2rem 0 1rem 0 !important;
-        padding-bottom: 0.5rem !important;
-        border-bottom: 3px solid #1f77b4 !important;
-        display: inline-block !important;
-    }
-    
-    /* Bilgi kutusu */
-    .info-box {
-        background: #e3f2fd !important;
-        border-left: 4px solid #2196f3 !important;
-        padding: 1rem 1.5rem !important;
-        border-radius: 4px !important;
-        margin: 1rem 0 !important;
-        color: #1565c0 !important;
-    }
-    
-    /* Tüm yazıların okunabilir olması için */
-    .stMarkdown, .stText, p, div, span, label {
-        color: #262730 !important;
-    }
-    
-    /* Sidebar yazıları */
-    section[data-testid="stSidebar"] .stMarkdown,
-    section[data-testid="stSidebar"] p,
-    section[data-testid="stSidebar"] div {
-        color: #262730 !important;
-    }
-    
-    /* Input label'ları */
-    .stSelectbox label,
-    .stMultiSelect label,
-    .stDateInput label,
-    .stTextInput label,
-    .stCheckbox label {
-        color: #262730 !important;
-        font-weight: 600 !important;
-    }
-    
-    /* Tablo yazıları */
-    .stDataFrame {
-        color: #262730 !important;
-    }
-    
-    /* Başlıklar */
-    h1, h2, h3, h4, h5, h6 {
-        color: #1f77b4 !important;
-        font-weight: 700 !important;
-    }
-    
-    /* Tablo içeriği */
-    table {
-        color: #262730 !important;
-    }
-    
-    td, th {
-        color: #262730 !important;
+    .social-links a img:hover {
+        transform: scale(1.1);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -214,10 +116,10 @@ def create_status_chart(df):
     )])
     
     fig.update_layout(
-        title=dict(text='Başvuru Durumu Dağılımı', font=dict(size=18, color='#1f77b4')),
-        paper_bgcolor='white',
-        plot_bgcolor='white',
-        font=dict(color='#262730'),
+        title=dict(text='Başvuru Durumu Dağılımı', font=dict(size=18, color=None)),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color=None),
         legend=dict(
             orientation='h',
             yanchor='bottom',
@@ -229,7 +131,7 @@ def create_status_chart(df):
         annotations=[dict(
             text=f'<b>{len(df)}</b><br>Toplam',
             x=0.5, y=0.5,
-            font=dict(size=20, color='#1f77b4'),
+            font=dict(size=20, color=None),
             showarrow=False
         )]
     )
@@ -252,8 +154,8 @@ def create_timeline_chart(df):
         y=daily_counts['count'],
         mode='lines+markers',
         name='Başvuru Sayısı',
-        line=dict(color='#1f77b4', width=2, shape='spline'),
-        marker=dict(size=6, color='#1f77b4'),
+        line=dict(color=None, width=2, shape='spline'),
+        marker=dict(size=6, color=None),
         fill='tozeroy',
         fillcolor='rgba(31, 119, 180, 0.1)',
         hovertemplate='<b>%{x|%d %B %Y}</b><br>Başvuru: %{y}<extra></extra>'
@@ -272,20 +174,20 @@ def create_timeline_chart(df):
         ))
     
     fig.update_layout(
-        title=dict(text='Günlük Başvuru Trendi', font=dict(size=18, color='#1f77b4')),
+        title=dict(text='Günlük Başvuru Trendi', font=dict(size=18, color=None)),
         xaxis=dict(
             title='Tarih',
             gridcolor='rgba(0,0,0,0.1)',
-            tickfont=dict(color='#262730')
+            tickfont=dict(color=None)
         ),
         yaxis=dict(
             title='Başvuru Sayısı',
             gridcolor='rgba(0,0,0,0.1)',
-            tickfont=dict(color='#262730')
+            tickfont=dict(color=None)
         ),
-        paper_bgcolor='white',
-        plot_bgcolor='white',
-        font=dict(color='#262730'),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color=None),
         legend=dict(
             orientation='h',
             yanchor='bottom',
@@ -318,24 +220,24 @@ def create_company_chart(df, top_n=15):
         ),
         text=company_counts.values,
         textposition='outside',
-        textfont=dict(color='#262730'),
+        textfont=dict(color=None),
         hovertemplate='<b>%{y}</b><br>Başvuru: %{x}<extra></extra>'
     )])
     
     fig.update_layout(
-        title=dict(text=f'En Çok Başvurulan {top_n} Şirket', font=dict(size=18, color='#1f77b4')),
+        title=dict(text=f'En Çok Başvurulan {top_n} Şirket', font=dict(size=18, color=None)),
         xaxis=dict(
             title='Başvuru Sayısı',
             gridcolor='rgba(0,0,0,0.1)',
-            tickfont=dict(color='#262730')
+            tickfont=dict(color=None)
         ),
         yaxis=dict(
-            tickfont=dict(color='#262730'),
+            tickfont=dict(color=None),
             categoryorder='total ascending'
         ),
-        paper_bgcolor='white',
-        plot_bgcolor='white',
-        font=dict(color='#262730'),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color=None),
         margin=dict(t=60, b=60, l=200, r=60),
         height=max(400, top_n * 35)
     )
@@ -360,25 +262,25 @@ def create_position_wordcloud_chart(df):
         ),
         text=position_counts.values,
         textposition='outside',
-        textfont=dict(color='#262730'),
+        textfont=dict(color=None),
         hovertemplate='<b>%{x}</b><br>Başvuru: %{y}<extra></extra>'
     )])
     
     fig.update_layout(
-        title=dict(text='En Çok Başvurulan Pozisyonlar', font=dict(size=18, color='#1f77b4')),
+        title=dict(text='En Çok Başvurulan Pozisyonlar', font=dict(size=18, color=None)),
         xaxis=dict(
             tickangle=45,
-            tickfont=dict(size=10, color='#262730'),
+            tickfont=dict(size=10, color=None),
             gridcolor='rgba(0,0,0,0.1)'
         ),
         yaxis=dict(
             title='Başvuru Sayısı',
             gridcolor='rgba(0,0,0,0.1)',
-            tickfont=dict(color='#262730')
+            tickfont=dict(color=None)
         ),
-        paper_bgcolor='white',
-        plot_bgcolor='white',
-        font=dict(color='#262730'),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color=None),
         margin=dict(t=60, b=120, l=60, r=20),
         height=450
     )
@@ -421,26 +323,26 @@ def create_period_histogram(df, period='weekly'):
         ),
         text=period_counts['count'],
         textposition='outside',
-        textfont=dict(color='#262730', size=11),
+        textfont=dict(color=None, size=11),
         hovertemplate='<b>%{x}</b><br>Başvuru: %{y}<extra></extra>'
     ))
     
     fig.update_layout(
-        title=dict(text=title, font=dict(size=18, color='#1f77b4')),
+        title=dict(text=title, font=dict(size=18, color=None)),
         xaxis=dict(
             title=xaxis_title,
             tickangle=45,
-            tickfont=dict(color='#262730', size=10),
+            tickfont=dict(color=None, size=10),
             gridcolor='rgba(0,0,0,0.1)'
         ),
         yaxis=dict(
             title='Başvuru Sayısı',
-            tickfont=dict(color='#262730'),
+            tickfont=dict(color=None),
             gridcolor='rgba(0,0,0,0.1)'
         ),
-        paper_bgcolor='white',
-        plot_bgcolor='white',
-        font=dict(color='#262730'),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color=None),
         margin=dict(t=60, b=100, l=60, r=20),
         height=450
     )
@@ -462,7 +364,7 @@ def create_response_funnel(metrics):
         y=stages,
         x=values,
         textinfo="value+percent initial",
-        textfont=dict(color='#262730'),
+        textfont=dict(color=None),
         marker=dict(
             color=['#2196f3', '#ff9800', '#4caf50', '#f44336'],
             line=dict(color='rgba(255,255,255,0.2)', width=2)
@@ -471,10 +373,10 @@ def create_response_funnel(metrics):
     ))
     
     fig.update_layout(
-        title=dict(text='Başvuru Yanıt Hunisi', font=dict(size=18, color='#1f77b4')),
-        paper_bgcolor='white',
-        plot_bgcolor='white',
-        font=dict(color='#262730'),
+        title=dict(text='Başvuru Yanıt Hunisi', font=dict(size=18, color=None)),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color=None),
         margin=dict(t=60, b=20, l=20, r=20),
         height=350
     )
@@ -512,20 +414,20 @@ def create_status_by_company(df, top_n=10):
     
     fig.update_layout(
         barmode='stack',
-        title=dict(text=f'Top {top_n} Şirket - Durum Dağılımı', font=dict(size=18, color='#1f77b4')),
+        title=dict(text=f'Top {top_n} Şirket - Durum Dağılımı', font=dict(size=18, color=None)),
         xaxis=dict(
             tickangle=45,
-            tickfont=dict(size=10, color='#262730'),
+            tickfont=dict(size=10, color=None),
             gridcolor='rgba(0,0,0,0.1)'
         ),
         yaxis=dict(
             title='Başvuru Sayısı',
             gridcolor='rgba(0,0,0,0.1)',
-            tickfont=dict(color='#262730')
+            tickfont=dict(color=None)
         ),
-        paper_bgcolor='white',
-        plot_bgcolor='white',
-        font=dict(color='#262730'),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color=None),
         legend=dict(
             orientation='h',
             yanchor='bottom',
